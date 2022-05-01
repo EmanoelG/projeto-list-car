@@ -15,7 +15,7 @@ class _TextUtilState extends State<TextUtil> {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Teste faskjfaskfjasas',
+      widget.text,
       style: TextStyle(
         fontSize: widget.sizeLetra ??= 18.0,
         fontWeight: FontWeight.bold,

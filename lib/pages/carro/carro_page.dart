@@ -3,10 +3,22 @@ import 'package:list_car/pages/carro/carro.dart';
 import 'package:list_car/pages/carro/loremipsum_api.dart';
 import 'package:list_car/pages/widgets/utilText.dart';
 
-
-class CarroPage extends StatelessWidget {
+class CarroPage extends StatefulWidget {
   Carros carro;
   CarroPage(this.carro);
+
+  @override
+  State<CarroPage> createState() => _CarroPageState();
+}
+
+class _CarroPageState extends State<CarroPage> {
+  final _lorimpsumBloc = LorimpsumBloc();
+  @override
+  void initState() {
+    super.initState();
+    _lorimpsumBloc.fetch();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +29,7 @@ class CarroPage extends StatelessWidget {
 
   AppBar _appBar() {
     return AppBar(
-      title: Text(carro.nome),
+      title: Text(widget.carro.nome),
       actions: <Widget>[
         IconButton(
           onPressed: _onClickMap,
@@ -55,7 +67,7 @@ class CarroPage extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: ListView(
         children: <Widget>[
-          Image.network(carro.urlFoto),
+          Image.network(widget.carro.urlFoto),
           _descricaoCarro(),
           Divider(),
           _blocoDois()
@@ -72,11 +84,11 @@ class CarroPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              carro.nome,
+              widget.carro.nome,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Text(
-              carro.tipo,
+              widget.carro.tipo,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ],
@@ -131,13 +143,17 @@ class CarroPage extends StatelessWidget {
   void _onClickFavorito() {}
 
   void _onCliShare() {}
+  void dispose() {
+    super.dispose();
+    _lorimpsumBloc.dispose();
+  }
 
   _blocoDois() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        FutureBuilder<String>(
-            future: LoripsumApi.getLoripsum(),
+        StreamBuilder<String>(
+            stream: _lorimpsumBloc.stream,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return Center(

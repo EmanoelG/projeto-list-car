@@ -1,11 +1,10 @@
 import 'dart:convert' as convert;
 
-
 import 'package:http/http.dart' as http;
 import 'package:list_car/pages/carro/carro.dart';
 
 import '../login/usuario.dart';
-
+import 'carro_dao.dart';
 
 class TipoCarro {
   static final String classicos = "classicos";
@@ -30,6 +29,16 @@ class CarrosApi {
       String json = response.body;
       print('json > $json');
       List list = convert.json.decode(json);
+      List<Carros> carros =
+          list.map<Carros>((e) => Carros.fromJson(e)).toList();
+      final dao = CarroDAO();
+      carros.forEach(
+        (c) {
+          dao.save(c);
+        },
+      );
+
+      for (Carros c in carros) {}
       return list.map<Carros>((e) => Carros.fromJson(e)).toList();
     } on Exception catch (e) {
       print('e>> $e');

@@ -20,6 +20,7 @@ abstract class CarrosModel with Store {
   fetch(String tipoCarro) async {
     try {
       this.carros = await CarrosApi.getCarros(tipoCarro);
+  
     } catch (e) {
       error = e;
     }
