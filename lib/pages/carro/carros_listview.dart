@@ -11,6 +11,10 @@ class CarrosListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return listView();
+  }
+
+  Container listView() {
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(16),

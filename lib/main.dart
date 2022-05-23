@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:list_car/pages/login/login_page.dart';
+import 'package:list_car/pages/widgets/splashpage.dart';
 import 'pages/colors.dart';
 
 void main(n) {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: corfUnco,
         primarySwatch: Colors.red,
       ),
-      home: LoginPage(),
+      home: SplashPage(),
     );
   }
 }

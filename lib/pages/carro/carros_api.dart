@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:list_car/pages/carro/carro.dart';
 
 import '../login/usuario.dart';
-import 'carro_dao.dart';
+import 'favoritos/carro_dao.dart';
 
 class TipoCarro {
   static final String classicos = "classicos";
@@ -38,7 +38,6 @@ class CarrosApi {
         },
       );
 
-      for (Carros c in carros) {}
       return list.map<Carros>((e) => Carros.fromJson(e)).toList();
     } on Exception catch (e) {
       print('e>> $e');
