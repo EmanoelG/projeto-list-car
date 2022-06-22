@@ -18,20 +18,20 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
-    /* Future.delayed(Duration(seconds: 3), () {
-      push(context, LoginPage());
-    });
-*/
+  // Future.delayed(Duration(seconds: 15), () {
+  //     push(context, LoginPage());
+  //   });   
+
     //Inicializa banco de dados.
     Future futureA = DatabaseHelper.getInstance().db;
     Future futureB = Future.delayed(Duration(seconds: 3));
     // Verifica se o usuario manteve logado.
     Future<Usuario> futureC = Usuario.get();
-    /* futureC.then((Usuario user) {
+     futureC.then((Usuario user) {
       if (user != null) {
         push(context, HomePage(), replace: true);
       }
-    });*/
+    });
 
     Future.wait([futureA, futureB, futureC]).then(
       (List values) {
