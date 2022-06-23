@@ -37,7 +37,7 @@ class _SplashPageState extends State<SplashPage> {
       (List values) {
         Usuario user = values[2];
         if (user != null) {
-          push(context, HomePage(), replace: true);
+          push(context, HomePage(), replace: false);
         } else {
           push(context, LoginPage(), replace: true);
         }

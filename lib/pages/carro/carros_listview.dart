@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:list_car/pages/carro/carro_page.dart';
 import 'package:list_car/util/nav.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'carro.dart';
 import 'carros_api.dart';
 
@@ -32,8 +32,9 @@ class CarrosListView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Center(
-                            child: Image.network(
-                          c.urlFoto ??
+                            child: CachedNetworkImage(
+                    
+                          imageUrl: c.urlFoto ??
                               "https://th.bing.com/th/id/OIP.Ruy9jl-Xtz-04gKaU5F84QHaE9?pid=ImgDet&rs=1",
                           width: 350,
                         )),

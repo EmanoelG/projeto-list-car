@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:list_car/pages/carro/carro.dart';
 import 'package:list_car/pages/carro/loremipsum_api.dart';
@@ -67,7 +68,7 @@ class _CarroPageState extends State<CarroPage> {
       padding: EdgeInsets.all(16),
       child: ListView(
         children: <Widget>[
-          Image.network(widget.carro.urlFoto),
+          CachedNetworkImage(imageUrl: widget.carro.urlFoto),
           _descricaoCarro(),
           Divider(),
           _blocoDois()
