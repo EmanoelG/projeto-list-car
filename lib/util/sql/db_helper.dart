@@ -13,10 +13,11 @@ class DatabaseHelper {
 
   Future<Database> get db async {
     if (_db != null) {
+      print('_db>> $_db');
       return _db;
     }
     _db = await _initDb();
-
+    print('_db>>>> $_db');
     return _db;
   }
 
@@ -26,21 +27,26 @@ class DatabaseHelper {
     print("db $path");
 
     var db = await openDatabase(path,
-        version: 2, onCreate: _onCreate, onUpgrade: _onUpgrade);
+        version: 1, onCreate: _onCreate, onUpgrade: _onUpgrade);
     return db;
   }
 
   void _onCreate(Database db, int newVersion) async {
-    String s = await rootBundle.loadString("assest/sql/create.sql");
-    List<String> listS = s.split(';');
-    listS.forEach(
-      (script) async {
-        print('ASSEST SCRIPT $script');
-        if (script.isNotEmpty) {
-          await db.execute(script);
-        }
-      },
-    );
+    try {
+      //C:\Flutter Project\list_car\assets\sql\create_sql
+      String s = await rootBundle.loadString("assets/sql/create_sql");
+      List<String> listS = s.split(';');
+      listS.forEach(
+        (script) async {
+          print('ASSEST SCRIPT $script');
+          if (script.isNotEmpty) {
+            await db.execute(script);
+          }
+        },
+      );
+    } on Exception catch (e) {
+      print('Erro ao criar database: $e');
+    }
   }
 
   Future<FutureOr<void>> _onUpgrade(

@@ -1,4 +1,3 @@
-
 import 'dart:convert' as convert;
 
 import 'package:list_car/util/prefs.dart';
@@ -52,15 +51,24 @@ class Usuario {
 
   static Future<Usuario> get() async {
     print('gettt !!!');
-     var prefs = await SharedPreferences.getInstance();
-    String json =  prefs.getString("user.prefs");
-   if(json.isEmpty){
-     return null;
-   }
-    Map map = convert.json.decode(json);
-    Usuario user = Usuario.fromJson(map);
-    print(user);
-    return user;
+    var prefs = await SharedPreferences.getInstance();
+    // prefs.
+    bool contains = prefs.containsKey("user.prefs");
+    print('Contain: $contains');
+    if (contains == true) {
+      String js = prefs.getString("user.prefs") ?? null;
+      print('js:>>> ' + js);
+
+      if (js == "") {
+        return null;
+      }
+
+      Map map = convert.json.decode(js);
+      Usuario user = Usuario.fromJson(map);
+      print(user);
+      return user;
+    } else
+      return null;
   }
 
   @override
@@ -69,7 +77,6 @@ class Usuario {
   }
 
   static void clear() {
-
     Prefs.setString("user.prefs", "");
   }
 }

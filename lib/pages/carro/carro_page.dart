@@ -4,6 +4,8 @@ import 'package:list_car/pages/carro/carro.dart';
 import 'package:list_car/pages/carro/loremipsum_api.dart';
 import 'package:list_car/pages/widgets/utilText.dart';
 
+import 'favoritos/favorito_service.dart';
+
 class CarroPage extends StatefulWidget {
   Carros carro;
   CarroPage(this.carro);
@@ -14,6 +16,8 @@ class CarroPage extends StatefulWidget {
 
 class _CarroPageState extends State<CarroPage> {
   final _lorimpsumBloc = LorimpsumBloc();
+
+  Carros get car => widget.carro;
   @override
   void initState() {
     super.initState();
@@ -141,7 +145,9 @@ class _CarroPageState extends State<CarroPage> {
     }
   }
 
-  void _onClickFavorito() {}
+  void _onClickFavorito() {
+    FavoritoService.Favoritar(car);
+  }
 
   void _onCliShare() {}
   void dispose() {

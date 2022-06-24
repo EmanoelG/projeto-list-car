@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import '../carro.dart';
-import 'base_dao.dart';
-import 'db_helper.dart';
+import '../../../util/sql/base_dao.dart';
+import '../../../util/sql/db_helper.dart';
 
 // Data Access Object
 class CarroDAO extends BaseDAO<Carros> {

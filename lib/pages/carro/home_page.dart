@@ -6,6 +6,7 @@ import 'package:list_car/pages/carro/carros_listview.dart';
 import 'package:list_car/pages/carro/carros_page.dart';
 import 'package:list_car/util/prefs.dart';
 import '../colors.dart';
+import 'favoritos/favoritos_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage>
   @override
   Future<void> initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
 
     Future<int> future = Prefs.getInt('tabIdx');
     future.then((int value) => _tabController.index = value);
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage>
 
   _initTabs() async {
     int tabIdx = await Prefs.getInt("tabIdx");
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     setState(() {
       _tabController.index = tabIdx;
     });
@@ -58,6 +59,9 @@ class _HomePageState extends State<HomePage>
             Tab(
               text: 'Luxuosos',
             ),
+            Tab(
+              text: 'Favoritos',
+            ),
           ],
         ),
       ),
@@ -72,7 +76,8 @@ class _HomePageState extends State<HomePage>
           ),
           CarrosPage(
             tipo: TipoCarro.luxo,
-          )
+          ),
+          FavoritosPage()
         ],
       ),
       drawer: DrawerList(),

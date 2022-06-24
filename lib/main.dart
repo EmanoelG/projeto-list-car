@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:list_car/pages/login/login_page.dart';
 import 'package:list_car/pages/widgets/splashpage.dart';
 import 'pages/colors.dart';
 

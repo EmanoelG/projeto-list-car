@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/nav.dart';
-import '../carro/favoritos/db_helper.dart';
+import '../../util/sql/db_helper.dart';
 import '../carro/home_page.dart';
 
 import '../login/login_page.dart';
@@ -18,18 +18,18 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
-  // Future.delayed(Duration(seconds: 15), () {
-  //     push(context, LoginPage());
-  //   });   
+    // Future.delayed(Duration(seconds: 15), () {
+    //     push(context, LoginPage());
+    //   });
 
     //Inicializa banco de dados.
     Future futureA = DatabaseHelper.getInstance().db;
     Future futureB = Future.delayed(Duration(seconds: 3));
     // Verifica se o usuario manteve logado.
     Future<Usuario> futureC = Usuario.get();
-     futureC.then((Usuario user) {
+    futureC.then((Usuario user) {
       if (user != null) {
-        push(context, HomePage(), replace: true);
+        push(context, HomePage(), replace: false);
       }
     });
 
@@ -39,7 +39,7 @@ class _SplashPageState extends State<SplashPage> {
         if (user != null) {
           push(context, HomePage(), replace: false);
         } else {
-          push(context, LoginPage(), replace: true);
+          push(context, LoginPage(), replace: false);
         }
       },
     );
