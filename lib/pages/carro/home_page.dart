@@ -4,6 +4,7 @@ import 'package:list_car/DrawerList.dart';
 import 'package:list_car/pages/carro/carros_api.dart';
 import 'package:list_car/pages/carro/carros_listview.dart';
 import 'package:list_car/pages/carro/carros_page.dart';
+import 'package:list_car/util/alert.dart';
 import 'package:list_car/util/prefs.dart';
 import '../colors.dart';
 import 'favoritos/favoritos_page.dart';
@@ -81,6 +82,14 @@ class _HomePageState extends State<HomePage>
         ],
       ),
       drawer: DrawerList(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: _onClickAdicionarCarro,
+      ),
     );
+  }
+
+  void _onClickAdicionarCarro() {
+    alert(context, "Adicionar carros");
   }
 }

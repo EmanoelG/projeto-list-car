@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:list_car/pages/carro/favoritos/carro_dao.dart';
 import 'package:list_car/pages/carro/favoritos/favorito.dart';
 import 'package:list_car/pages/carro/favoritos/favorito_dao.dart';
@@ -7,16 +8,18 @@ import 'favorito.dart';
 import 'favorito.dart';
 
 class FavoritoService {
-  static Favoritar(Carros c) async {
+  static Future<bool> Favoritar(Carros c) async {
     Favorito f = Favorito.fromCarro(c);
     final dao = FavoriotDAO();
     final exists = await dao.exists(c.id);
     if (exists) {
       dao.delete(c.id);
       print('Existe');
+      return false;
     } else {
       dao.save(f);
       print('Save');
+      return true;
     }
   }
 
@@ -26,5 +29,11 @@ class FavoritoService {
         .query("SELECT * from carro c, favorito f where c.id = f.id;");
     print('return carros $carr');
     return carr;
+  }
+
+  static Future<bool> isFavorito(Carros c) async {
+    final carr = await CarroDAO();
+    final exists = await carr.exists(c.id);
+    return exists;
   }
 }

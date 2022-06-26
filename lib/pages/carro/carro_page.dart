@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:list_car/pages/carro/carro.dart';
+import 'package:list_car/pages/carro/favoritos/favorito.dart';
 import 'package:list_car/pages/carro/loremipsum_api.dart';
 import 'package:list_car/pages/widgets/utilText.dart';
 
@@ -17,10 +18,17 @@ class CarroPage extends StatefulWidget {
 class _CarroPageState extends State<CarroPage> {
   final _lorimpsumBloc = LorimpsumBloc();
 
+  Color colorFavorito = Colors.grey;
+
   Carros get car => widget.carro;
   @override
   void initState() {
     super.initState();
+    FavoritoService.isFavorito(car).then((bool Favorito) {
+      setState(() {
+        colorFavorito = Favorito ? Colors.red : Colors.grey;
+      });
+    });
     _lorimpsumBloc.fetch();
   }
 
@@ -110,7 +118,8 @@ class _CarroPageState extends State<CarroPage> {
           onPressed: _onClickFavorito,
           icon: Icon(
             Icons.favorite,
-            color: Colors.red,
+            // color: Colors.red,
+            color: colorFavorito,
             size: 40,
           ),
         ),
@@ -145,8 +154,13 @@ class _CarroPageState extends State<CarroPage> {
     }
   }
 
-  void _onClickFavorito() {
-    FavoritoService.Favoritar(car);
+  void _onClickFavorito() async {
+    bool favoritar = await FavoritoService.Favoritar(car);
+    setState(
+      () {
+        colorFavorito = favoritar ? Colors.red : Colors.grey;
+      },
+    );
   }
 
   void _onCliShare() {}
@@ -160,15 +174,16 @@ class _CarroPageState extends State<CarroPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         StreamBuilder<String>(
-            stream: _lorimpsumBloc.stream,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return TextUtil(snapshot.data.toString());
-            }),
+          stream: _lorimpsumBloc.stream,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return TextUtil(snapshot.data.toString());
+          },
+        ),
       ],
     );
   }
