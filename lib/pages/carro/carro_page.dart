@@ -5,6 +5,8 @@ import 'package:list_car/pages/carro/favoritos/favorito.dart';
 import 'package:list_car/pages/carro/loremipsum_api.dart';
 import 'package:list_car/pages/widgets/utilText.dart';
 
+import '../../util/nav.dart';
+import 'carro_form_page.dart';
 import 'favoritos/favorito_service.dart';
 
 class CarroPage extends StatefulWidget {
@@ -142,7 +144,12 @@ class _CarroPageState extends State<CarroPage> {
   _onClickPopoupMenu(String value) {
     switch (value) {
       case "Editar":
-        print('Editando !!');
+        push(
+          context,
+          CarroFormPage(
+            car: this.car,
+          ),
+        );
         break;
       case "Deletar":
         print('Deletando !!');

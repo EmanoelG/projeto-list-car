@@ -5,8 +5,11 @@ import 'package:list_car/pages/carro/carros_api.dart';
 import 'package:list_car/pages/carro/carros_listview.dart';
 import 'package:list_car/pages/carro/carros_page.dart';
 import 'package:list_car/util/alert.dart';
+import 'package:list_car/util/nav.dart';
+import '../../util/nav.dart';
 import 'package:list_car/util/prefs.dart';
 import '../colors.dart';
+import 'carro_form_page.dart';
 import 'favoritos/favoritos_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -90,6 +93,6 @@ class _HomePageState extends State<HomePage>
   }
 
   void _onClickAdicionarCarro() {
-    alert(context, "Adicionar carros");
+    push(context,CarroFormPage());
   }
 }

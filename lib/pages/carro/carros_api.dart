@@ -1,7 +1,9 @@
 import 'dart:convert' as convert;
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:list_car/pages/carro/carro.dart';
+import 'package:list_car/pages/login/api_response.dart';
 
 import '../login/usuario.dart';
 import 'favoritos/carro_dao.dart';
@@ -42,5 +44,27 @@ class CarrosApi {
     } on Exception catch (e) {
       print('e>> $e');
     }
+  }
+
+  static Future<ApisResponse<bool>> save(Carros c) async {
+    Usuario user = await Usuario.get();
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer ${user.token}",
+    };
+    var url = 'https://carros-springboot.herokuapp.com/api/v2/carros';
+    print("Post > " + url);
+    print('cc> $c');
+    String json = c.toJson();
+    var response =
+        await http.post(Uri.parse(url), body: json, headers: headers);
+    if (response.statusCode == 201) {
+      Map mapResponse = convert.json.decode(response.body);
+      Carros car = Carros.fromJson(mapResponse);
+      print('Novo carros: ${car.id}');
+      return ApisResponse.ok(true);
+    }
+    Map mapResponse = convert.json.decode(response.body);
+    return ApisResponse.error(mapResponse["error"]);
   }
 }
