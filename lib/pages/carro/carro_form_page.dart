@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:list_car/pages/carro/carro.dart';
 import 'package:list_car/pages/carro/carros_api.dart';
+import 'package:list_car/pages/carro/uploado_service.dart';
 import 'package:list_car/pages/login/api_response.dart';
 import 'package:list_car/util/alert.dart';
 
@@ -140,7 +141,10 @@ class _CarroFormPageState extends State<CarroFormPage> {
 
   _headerFoto() {
     if (_imagePath != null) {
-      return Image.file(File(_imagePath));
+      return Image.file(
+        File(_imagePath),
+        height: 150,
+      );
     } else {
       return GestureDetector(
         child: Image.asset(
@@ -240,7 +244,7 @@ CachedNetworkImage(
     });
 
     print("Salvar o carro $c");
-    ApisResponse<bool> response = await CarrosApi.save(c);
+    ApisResponse<bool> response = await CarrosApi.save(c, _imagePath);
     if (response.ok) {
       alert(context, "Carro salvo !", callback: () {
         Navigator.pop(context);
@@ -265,6 +269,7 @@ CachedNetworkImage(
         this._file = image;
         _imagePath = image.path;
       });
+      // UploadApi.upload(File(_imagePath));
     }
   }
 }
