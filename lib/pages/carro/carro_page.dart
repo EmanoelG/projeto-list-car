@@ -5,8 +5,11 @@ import 'package:list_car/pages/carro/favoritos/favorito.dart';
 import 'package:list_car/pages/carro/loremipsum_api.dart';
 import 'package:list_car/pages/widgets/utilText.dart';
 
+import '../../util/alert.dart';
 import '../../util/nav.dart';
+import '../login/api_response.dart';
 import 'carro_form_page.dart';
+import 'carros_api.dart';
 import 'favoritos/favorito_service.dart';
 
 class CarroPage extends StatefulWidget {
@@ -152,7 +155,7 @@ class _CarroPageState extends State<CarroPage> {
         );
         break;
       case "Deletar":
-        print('Deletando !!');
+        deletarCarro();
         break;
       case "Share":
         print('Compartilhando !!');
@@ -193,5 +196,17 @@ class _CarroPageState extends State<CarroPage> {
         ),
       ],
     );
+  }
+
+  Future<void> deletarCarro() async {
+    ApisResponse<bool> response = await CarrosApi.delete(car);
+    if (response.ok) {
+      alert(context, "Carro deletado com sucesso !", callback: () {
+        Navigator.pop(context);
+      });
+    } else {
+      print('ERRORR');
+      alert(context, response.msg);
+    }
   }
 }

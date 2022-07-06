@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:list_car/pages/carro/carro.dart';
 import 'package:list_car/pages/carro/carros_api.dart';
 import 'package:list_car/pages/login/api_response.dart';
@@ -26,6 +26,9 @@ class _CarroFormPageState extends State<CarroFormPage> {
   int _radioIndex = 0;
 
   var _showProgress = false;
+
+  XFile _file;
+  String _imagePath;
 
   Carros get carro => widget.car;
 
@@ -129,23 +132,33 @@ class _CarroFormPageState extends State<CarroFormPage> {
                     ),
               onPressed: _onClickSalvar,
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
   _headerFoto() {
-    return carro != null
-        ? CachedNetworkImage(
-            imageUrl: carro.urlFoto,
-          )
-        : Image.asset(
-            "assets/images/camera.png",
-            height: 150,
-          );
+    if (_imagePath != null) {
+      return Image.file(File(_imagePath));
+    } else {
+      return GestureDetector(
+        child: Image.asset(
+          "assets/images/camera.png",
+          height: 150,
+        ),
+        onTap: () {
+          print('Tirar foto !');
+          tirarFoto();
+        },
+      );
+    }
   }
 
+/*
+CachedNetworkImage(
+            imageUrl: carro.urlFoto,
+          )*/
   _radioTipo() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -243,5 +256,15 @@ class _CarroFormPageState extends State<CarroFormPage> {
     );
 
     print("Fim.");
+  }
+
+  void tirarFoto() async {
+    XFile image = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (image != null) {
+      setState(() {
+        this._file = image;
+        _imagePath = image.path;
+      });
+    }
   }
 }

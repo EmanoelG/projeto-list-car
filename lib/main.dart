@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:list_car/pages/widgets/splashpage.dart';
 import 'pages/colors.dart';
 
-void main(n) {
+void main() {
   runApp(MyApp());
 }
 

@@ -47,24 +47,71 @@ class CarrosApi {
   }
 
   static Future<ApisResponse<bool>> save(Carros c) async {
-    Usuario user = await Usuario.get();
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer ${user.token}",
-    };
-    var url = 'https://carros-springboot.herokuapp.com/api/v2/carros';
-    print("Post > " + url);
-    print('cc> $c');
-    String json = c.toJson();
-    var response =
-        await http.post(Uri.parse(url), body: json, headers: headers);
-    if (response.statusCode == 201) {
+    try {
+      Usuario user = await Usuario.get();
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${user.token}",
+      };
+      var url = 'https://carros-springboot.herokuapp.com/api/v2/carros';
+      if (c.id != null) {
+        url += '/${c.id}';
+      }
+      print("Post > " + url);
+
+      String json = c.toJson();
+      var response = await (c.id == null
+          ? http.post(Uri.parse(url), body: json, headers: headers)
+          : http.put(Uri.parse(url), body: json, headers: headers));
+      print("STATUS CODE: " + response.statusCode.toString());
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        Map mapResponse = convert.json.decode(response.body);
+        Carros car = Carros.fromJson(mapResponse);
+        print('Novo carros: ${car.id}');
+        return ApisResponse.ok(true);
+      }
+      if (response.body == null || response.body.isEmpty) {
+        Map mapResponse = convert.json.decode(response.body);
+        return ApisResponse.error(
+            mapResponse["Não foi possível salvar o carro !"]);
+      }
       Map mapResponse = convert.json.decode(response.body);
-      Carros car = Carros.fromJson(mapResponse);
-      print('Novo carros: ${car.id}');
-      return ApisResponse.ok(true);
+      return ApisResponse.error(mapResponse["error"]);
+    } on Exception catch (e) {
+      return ApisResponse.error("Não foi possível salvar o carro !");
     }
-    Map mapResponse = convert.json.decode(response.body);
-    return ApisResponse.error(mapResponse["error"]);
+  }
+
+  static delete(c) async {
+    try {
+      Usuario user = await Usuario.get();
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${user.token}",
+      };
+      var url = 'https://carros-springboot.herokuapp.com/api/v2/carros/${c.id}';
+
+      print("delete > " + url);
+
+      String json = c.toJson();
+      var response = await http.delete(Uri.parse(url), headers: headers);
+
+      print("STATUS CODE: " + response.statusCode.toString());
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        Map mapResponse = convert.json.decode(response.body);
+        Carros car = Carros.fromJson(mapResponse);
+        print('Novo carros: ${car.id}');
+        return ApisResponse.ok(true);
+      }
+      if (response.body == null || response.body.isEmpty) {
+        Map mapResponse = convert.json.decode(response.body);
+        return ApisResponse.error(
+            mapResponse["Não foi possível deletar o carro !"]);
+      }
+      Map mapResponse = convert.json.decode(response.body);
+      return ApisResponse.error(mapResponse["error"]);
+    } on Exception catch (e) {
+      return ApisResponse.error("Não foi possível deletar o carro !");
+    }
   }
 }
