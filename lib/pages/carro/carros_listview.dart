@@ -104,13 +104,24 @@ class CarrosListView extends StatelessWidget {
           children: <Widget>[
             ListTile(
               title: Text('Detalhes'),
+              onTap: () {
+                pop(context);
+                _onClickCarro(context, c);
+              },
             ),
             ListTile(
               title: Text('Share'),
+              onTap: () {
+                _onClickShare(context, c);
+              },
             ),
           ],
         );
       },
     );
+  }
+
+  void _onClickShare(BuildContext context, Carros c) {
+    print('Compartilhando carro');
   }
 }
