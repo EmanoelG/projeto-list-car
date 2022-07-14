@@ -101,7 +101,7 @@ class CarrosListView extends StatelessWidget {
       builder: (context) {
         return SimpleDialog(
           title: Text(c.nome),
-          children: [
+          children: <Widget>[
             ListTile(
               title: Text('Detalhes'),
             ),
