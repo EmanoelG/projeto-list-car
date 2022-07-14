@@ -1,13 +1,13 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:list_car/pages/carro/carro_page.dart';
-import 'package:list_car/pages/carro/carros_bloc.dart';
-import 'package:list_car/pages/carro/carros_listview.dart';
-import 'package:list_car/pages/carro/carros_model.dart';
-import 'package:list_car/util/nav.dart';
+
 import 'package:list_car/util/text_error.dart';
+import 'package:provider/provider.dart';
+import '../../../main.dart';
 import '../carro.dart';
-import 'favoritos_bloc.dart';
+import '../carros_listview.dart';
+import 'favoritos_provider/favorito_service_provider.dart';
 
 class FavoritosPage extends StatefulWidget {
   @override
@@ -17,39 +17,35 @@ class FavoritosPage extends StatefulWidget {
 class _FavoritosPageState extends State<FavoritosPage>
     with AutomaticKeepAliveClientMixin<FavoritosPage> {
   List<Carros> carros;
-  var _favoritosBloc = FavoritosBloc();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _favoritosBloc.fetch();
+    Provider.of<FavoritoServiceModel>(context, listen: false).getCarros();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return StreamBuilder(
-      stream: _favoritosBloc.Strea,
-      builder: (context, snapshot) {
-        if (snapshot.error != null) {
-          print('ERROR >>> ' + snapshot.toString());
-          return TextError('Não foi possível buscar a lista de carros !');
-        }
-        if (!snapshot.hasData) {
-          return CircularProgressIndicator();
-        }
-        List<Carros> carros = snapshot.data;
-        return RefreshIndicator(
-          onRefresh: _onRefresh,
-          child: CarrosListView(carros),
-        );
-      },
+    FavoritoServiceModel model = Provider.of<FavoritoServiceModel>(context);
+    carros = model.car;
+    if (carros.isEmpty) {
+      return Center(
+        child: Text('Nenhum carro nos favorito '),
+      );
+    }
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      child: CarrosListView(carros),
     );
   }
 
-  Future<void> _onRefresh() {
-    return _favoritosBloc.fetch();
+  Future<Future<List<Carros>>> _onRefresh() async {
+    FavoritoServiceModel modelCar =
+        await Provider.of<FavoritoServiceModel>(context, listen: false);
+    modelCar.getCarros();
+    return null;
   }
 
   @override
