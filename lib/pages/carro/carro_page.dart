@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:list_car/pages/carro/carro.dart';
-import 'package:list_car/pages/carro/favoritos/favorito.dart';
+
 import 'package:list_car/pages/carro/loremipsum_api.dart';
 import 'package:list_car/pages/widgets/utilText.dart';
 
+import 'package:url_launcher/link.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../util/alert.dart';
 import '../../util/nav.dart';
 import '../login/api_response.dart';
@@ -23,7 +25,7 @@ class CarroPage extends StatefulWidget {
 class _CarroPageState extends State<CarroPage> {
   final _lorimpsumBloc = LorimpsumBloc();
 
-  Color colorFavorito = Colors.grey;
+  Color colorFavorito = Colors.red;
 
   Carros get car => widget.carro;
   @override
@@ -41,7 +43,7 @@ class _CarroPageState extends State<CarroPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(),
-      body: _body(),
+      body: _body(context, car),
     );
   }
 
@@ -80,16 +82,39 @@ class _CarroPageState extends State<CarroPage> {
     );
   }
 
-  _body() {
+  _body(context, Carros car) {
     return Container(
       padding: EdgeInsets.all(16),
       child: ListView(
         children: <Widget>[
-          CachedNetworkImage(imageUrl: widget.carro.urlFoto),
-          _descricaoCarro(),
-          Divider(),
-          _blocoDois()
+          cardListView(car, context),
         ],
+      ),
+    );
+  }
+
+  Card cardListView(Carros c, BuildContext context) {
+    return Card(
+      color: Color.fromARGB(255, 255, 255, 255),
+      child: Padding(
+        padding: const EdgeInsets.all(1.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Center(
+                child: CachedNetworkImage(
+              imageUrl: c.urlFoto ??
+                  "https://th.bing.com/th/id/OIP.Ruy9jl-Xtz-04gKaU5F84QHaE9?pid=ImgDet&rs=1",
+              width: 350,
+            )),
+            Container(
+              // onPressed: () => _onClickCarro(context, c),
+              child: _descricaoCarro(),
+            ),
+            Divider(),
+            _blocoDois()
+          ],
+        ),
       ),
     );
   }
@@ -140,7 +165,14 @@ class _CarroPageState extends State<CarroPage> {
     );
   }
 
-  void _onClickVideoCam() {}
+  void _onClickVideoCam() {
+    if (car.urlVideo != null && car.urlVideo.isEmpty) {
+      canLaunchUrl(Uri.parse(car.urlVideo));
+    } else
+      launch(('https://www.youtube.com/watch?v=iZq0u3quAqo'));
+
+    //alert(context, 'Erro, esse carro nao possui video !');
+  }
 
   void _onClickMap() {}
 

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:list_car/pages/carro/carro_page.dart';
 import 'package:list_car/pages/carro/carros_listview.dart';
 import 'package:list_car/pages/carro/carros_model.dart';
-import 'package:list_car/util/nav.dart';
 import 'package:list_car/util/text_error.dart';
 import 'carro.dart';
 

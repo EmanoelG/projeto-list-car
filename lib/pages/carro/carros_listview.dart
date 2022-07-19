@@ -3,6 +3,7 @@ import 'package:list_car/pages/carro/carro_page.dart';
 import 'package:list_car/util/nav.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'carro.dart';
+import 'package:share/share.dart';
 
 class CarrosListView extends StatelessWidget {
   List<Carros> carr;
@@ -36,7 +37,7 @@ class CarrosListView extends StatelessWidget {
 
   Card cardListView(Carros c, BuildContext context) {
     return Card(
-      color: Color(0x000000009),
+      color: Color.fromARGB(210, 247, 247, 247),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -96,24 +97,30 @@ class CarrosListView extends StatelessWidget {
   }
 
   _onLongClickCarro(BuildContext context, Carros c) {
-    showDialog(
+    showModalBottomSheet(
       context: context,
       builder: (context) {
-        return SimpleDialog(
-          title: Text(c.nome),
+        return Column(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            Text(
+              c.nome,
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
             ListTile(
               title: Text('Detalhes'),
               onTap: () {
                 pop(context);
                 _onClickCarro(context, c);
               },
+              leading: Icon(Icons.directions_car),
             ),
             ListTile(
               title: Text('Share'),
               onTap: () {
                 _onClickShare(context, c);
               },
+              leading: Icon(Icons.share),
             ),
           ],
         );
@@ -122,6 +129,6 @@ class CarrosListView extends StatelessWidget {
   }
 
   void _onClickShare(BuildContext context, Carros c) {
-    print('Compartilhando carro');
+    Share.share(c.urlFoto);
   }
 }
