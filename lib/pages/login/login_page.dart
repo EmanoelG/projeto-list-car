@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:list_car/pages/login/login_bloc.dart';
 import 'package:list_car/pages/login/usuario.dart';
@@ -9,7 +7,7 @@ import 'package:list_car/util/alert.dart';
 import 'package:list_car/util/nav.dart';
 import '../carro/home_page.dart';
 import 'api_response.dart';
-import 'login_api.dart';
+import 'package:auth_buttons/auth_buttons.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -90,11 +88,28 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 20),
             StreamBuilder<bool>(
-                stream: _loginBloc.stramControllerProgress,
-                builder: (context, snapshot) {
-                  return AppButton(
-                      entrar, _onClickLogin, snapshot.data ?? false);
-                })
+              stream: _loginBloc.stramControllerProgress,
+              builder: (context, snapshot) {
+                return AppButton(entrar, _onClickLogin, snapshot.data ?? false);
+              },
+            ),
+            Container(
+              height: 46,
+              margin: EdgeInsets.only(top: 20),
+              child: GoogleAuthButton(
+                text: 'Seguir com google',
+                style: AuthButtonStyle(
+                  textStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.normal,
+                    color: Colors.black,
+                  ),
+                 // borderWidth: 1,
+                //  borderRadius: 20.0,
+                  borderColor: Colors.red,
+                ),
+              ),
+            )
           ],
         ),
       ),

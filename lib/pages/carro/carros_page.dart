@@ -52,8 +52,8 @@ class _CarrosPageState extends State<CarrosPage>
     );
   }
 
-  Future<void> _onRefresh() {
-    return _modelCarro.fetch(tipo);
+  Future<void> _onRefresh() async {
+    return await _modelCarro.fetch(tipo);
   }
 
   @override
