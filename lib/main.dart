@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:list_car/pages/carro/favoritos/favoritos_provider/favorito_service_provider.dart';
 import 'package:list_car/pages/widgets/splashpage.dart';
 import 'package:provider/provider.dart';
-
 import 'pages/colors.dart';
 
 void main() {
