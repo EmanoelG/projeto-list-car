@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:list_car/pages/login/login_bloc.dart';
 import 'package:list_car/pages/login/usuario.dart';
 import 'package:list_car/pages/widgets/app_button.dart';
@@ -16,7 +17,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _tlogin = TextEditingController();
-
+  var _controller = TextEditingController();
   final _tsenha = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -29,14 +30,12 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
 
-    /**
-     Future<Usuario> future = Usuario.get();
+    Future<Usuario> future = Usuario.get();
     future.then((Usuario user) {
       if (user != null) {
         push(context, HomePage(), replace: true);
       }
     });
-    */
   }
 
   @override
@@ -61,65 +60,65 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _body() {
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            AppTextInput(
-              'Login',
-              'Digite o nome do usuário ',
-              controller: _tlogin,
-              validator: _validatelogin,
-              type: TextInputType.name,
-              textInputAction: TextInputAction.next,
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: ListView(
+        children: [
+          AppTextInput(
+            'Login',
+            'Digite o nome do usuário ',
+            controller: _tlogin,
+            validator: _validatelogin,
+            type: TextInputType.name,
+            textInputAction: TextInputAction.next,
+          ),
+          SizedBox(height: 20),
+          AppTextInput(
+            'Senha',
+            'Digite sua senha',
+            obscure: true,
+            controller: _tsenha,
+            validator: _validateSenha,
+            type: TextInputType.number,
+            focus: _focusSenha,
+            textInputAction: TextInputAction.next,
+          ),
+          SizedBox(height: 20),
+          TextButton(
+            onPressed: () {
+              _onClickLogin();
+            },
+            child: const Text(
+              'Entrar',
             ),
-            SizedBox(height: 20),
-            AppTextInput(
-              'Senha',
-              'Digite sua senha',
-              obscure: true,
-              controller: _tsenha,
-              validator: _validateSenha,
-              type: TextInputType.number,
-              focus: _focusSenha,
-              textInputAction: TextInputAction.next,
-            ),
-            SizedBox(height: 20),
-            StreamBuilder<bool>(
-              stream: _loginBloc.stramControllerProgress,
-              builder: (context, snapshot) {
-                return AppButton(entrar, _onClickLogin, snapshot.data ?? false);
-              },
-            ),
-            Container(
-              height: 46,
-              margin: EdgeInsets.only(top: 20),
-              child: GoogleAuthButton(
-                text: 'Seguir com google',
-                style: AuthButtonStyle(
-                  textStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.normal,
-                    color: Colors.black,
-                  ),
-                 // borderWidth: 1,
-                //  borderRadius: 20.0,
-                  borderColor: Colors.red,
+          ),
+          Container(
+            height: 46,
+            margin: EdgeInsets.only(top: 20),
+            child: GoogleAuthButton(
+              text: 'Seguir com google',
+              style: AuthButtonStyle(
+                textStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.normal,
+                  color: Colors.black,
                 ),
+                // borderWidth: 1,
+                //  borderRadius: 20.0,
+                borderColor: Colors.red,
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
 
   _onClickLogin() async {
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
+    print('Clicou login');
+    // if (!_formKey.currentState.validate()) {
+    //   return;
+    // }
     var logins = _tlogin.text;
     String senha = _tsenha.text;
 
@@ -134,7 +133,9 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         alert(context, apisResponse.msg);
       }
-    } on Exception catch (e) {}
+    } on Exception catch (e) {
+      print('Exception: ' + e.toString());
+    }
   }
 
   String _validatelogin(String value) {
